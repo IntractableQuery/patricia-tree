@@ -130,13 +130,13 @@ module Collections
     # Note that trying to store a value in a locked tree results in a TreeLocked exception.
     def store(key_sequence, value=nil)
       # Some general observations from benchmarking this method:
-      #   * split('') is faster than scan(/./) for maglev/irb1.9
+      #   * split('') is faster than scan(/./) for maglev/mri1.9
       #   * Switching the [index] method to a [index,length] requirement for key_sequence
       #     in order to prettify code here has a significant performance impact unless
       #     you are accepting key_sequence as a string (and never converting it to an
       #     array).  Put another way, pulling substrings from a string is faster than pulling
       #     subarrays from an array -- the effect is most pronounced in maglev, which seems to
-      #     handle substring derivation much faster than irb.
+      #     handle substring derivation much faster than mri.
       #   * Not benchmarking related, but the real reason we convert key_sequence to an Array
       #     if it was a String is because before ruby 1.9, [] returns an ASCII code instead of a char
       key_sequence = key_sequence.split('') if key_sequence.kind_of? String
